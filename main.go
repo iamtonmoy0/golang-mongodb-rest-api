@@ -17,7 +17,7 @@ func main() {
 	http.ListenAndServe("localhost:9000", r)
 }
 func getSession() *mgo.Session {
-	s, err := mgo.Dail("mongodb://localhost:27107")
+	s, err := mgo.Dial("mongodb://localhost:27107")
 	if err != nil {
 		panic(err)
 	}
