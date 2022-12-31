@@ -1,12 +1,14 @@
 package controllers
-import(
-	"fmt"
+
+import (
 	"encoding/json"
+	"fmt"
+	"net/http"
+
+	"github.com/iamtonmoy0/mongodb-rest-api/models"
 	"github.com/julienschmidt/httprouter"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"net/http"
-
 )
 type UserController struct{
 	session *mgo.Session
@@ -22,7 +24,32 @@ func (uc UserController) GetUser (w http.ResponseWriter, r *http.Request ,p http
 	}
 	oid := bson.ObjectIdHex(id)
 	u := models.User{}
-	if err := uc.session.DB("mongo.golang").C("users").FindId(oid).
+	if err := uc.session.DB("mongo.golang").C("users").FindId(oid).One(&u); err != nil{
+		w.WriteHeader(404)
+		return
+	}
+	uj, err := json.Marshal(u)
+	if err!= nil{
+					fmt.Println(err)
+		}
+
+
+w.Header().Set("Content-type","application/json")
+w.WriteHeader(http.StatusOK)
+fmt.Fprintf(w,"%s\n",uj)
+
 }
-CreateUser
+func (uc UserController) CreateUser (w http.ResponseWriter,r  *http.Request,httprouter.params){
+	u := models.User{}
+	json.NewDecoder(r.Body).Decode(&u)
+	u.Id=bson.NewObjectId()
+	uc.session.DB("mongo-golang").C("users").Insert(u)
+	uj, err :=json.Marshal(u)
+	if err != nil{
+		fmt.Println(err)
+	}
+	w.Header().Set("Content-Type","application.json")
+	w.WriteHeader(http.StatusCreated)
+	fmt.Fprintf(w,"%s\n",uj)
+}
 DeleteUser
