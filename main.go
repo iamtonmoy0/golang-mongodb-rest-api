@@ -15,7 +15,7 @@ func main() {
 	r.GET("/user/:id", uc.GetUser)
 	r.POST("/user", uc.CreateUser)
 	r.DELETE("/user/:id", uc.DeleteUser)
-	http.ListenAndServe("localhost:9000", r)
+	http.ListenAndServe("localhost:8000", r)
 }
 func getSession() *mgo.Session {
 	s, err := mgo.Dial("mongodb://localhost:27107")
