@@ -4,6 +4,7 @@ import (
 	"os"
 	"github.com/julienschmidt/httprouter"
 	"gopkg.in/mgo.v2"
+	"github.com/iamtonmoy0/golang-mongodb-rest-api/controllers"
 )
 
 
@@ -14,6 +15,7 @@ func main(){
 	r.GET("/user/:id",uc.getUser)
 	r.POST("/user",uc.createUser)
 	r.DELETE("/user/:id",uc.deleteUser)
+
 
 }
 
