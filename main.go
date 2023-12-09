@@ -1,6 +1,9 @@
 package main
 
 import (
+	"log"
+	"net/http"
+
 	"github.com/julienschmidt/httprouter"
 	"gopkg.in/mgo.v2"
 )
@@ -11,7 +14,8 @@ func main() {
 	r.GET("")
 	r.POST()
 	r.DELETE()
-
+	// listen on port 7000
+	log.Fatal(http.ListenAndServe(":7000", r))
 }
 
 func getSession() *mgo.Session {
